@@ -8,5 +8,7 @@ router.get("/bookings/:bookingId/accept", authAdmin, bookCtrl.RequestAccept)
 router.get("/bookings/:bookingId/reject", authAdmin, bookCtrl.RequestRejected)
 router.post("/submitform", auth, bookCtrl.submitdataform);
 router.get("/booking-requests", auth, bookCtrl.getBookedRoom);
+router.get("/booking-requests/:userId", auth, bookCtrl.getBookedRoomUser);
+
 
 module.exports = router;

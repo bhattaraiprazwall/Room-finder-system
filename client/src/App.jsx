@@ -17,7 +17,9 @@ import LandingPage from "./Pages/LandingPage";
 import Navbar from "./Components/Navbar";
 import AdminDashboard from "./Components/adminDashboard";
 import AuthorizationGuard from "./Components/Authentication";
-import BookedRoomsPage from "./Components/Room_Display";
+
+import MyBookings from "./Components/MyBookings";
+import BookedRoomsPage from "./Components/BookingRequestLandlord";
 
 // Separate component to safely handle navbar rendering
 const NavbarWrapper = () => {
@@ -102,6 +104,14 @@ const App = () => {
                 element={
                   <AuthorizationGuard allowedRoles={["user"]}>
                     <Roomseekers />
+                  </AuthorizationGuard>
+                }
+              />
+              <Route
+                path="/bookings"
+                element={
+                  <AuthorizationGuard allowedRoles={["user"]}>
+                    <MyBookings />
                   </AuthorizationGuard>
                 }
               />

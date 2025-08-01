@@ -209,7 +209,67 @@ const bookCtrl = {
     } catch (error) {
       res.status(500).json({ msg: error.message });
     }
-  }
+  },
+
+  getBookedRoomUser: async (req, res) => {
+    try {
+        // Get user ID from request parameters or authenticated user
+        const userId = req.params.userId || req.user._id; // Use params or authenticated user
+        
+        // Find all bookings for this user and populate related data
+        const userBookings = await Book.find({ user: userId })
+            .populate('user', 'name email') // Populate user details
+            .populate('room', 'title location price') // Populate room details
+            .populate('owner', 'name email') // Populate owner details
+            .sort({ createdAt: -1 }); // Sort by newest first
+
+        if (userBookings.length === 0) {
+            return res.status(404).json({ 
+                success: false,
+                msg: "No bookings found for this user" 
+            });
+        }
+
+        // Format the response
+        const formattedBookings = userBookings.map(booking => ({
+            id: booking._id,
+            user: {
+                id: booking.user._id,
+                name: booking.user.name,
+                email: booking.user.email
+            },
+            room: {
+                id: booking.room._id,
+                title: booking.room.title,
+                location: booking.room.location,
+                price: booking.room.price
+            },
+            owner: {
+                id: booking.owner._id,
+                name: booking.owner.name,
+                email: booking.owner.email
+            },
+            bookingDate: booking.bookingDate,
+            bookingTime: booking.bookingTime,
+            status: booking.status,
+            createdAt: booking.createdAt
+        }));
+
+        res.status(200).json({
+            success: true,
+            count: formattedBookings.length,
+            data: formattedBookings
+        });
+
+    } catch (error) {
+        console.error("Error fetching user bookings:", error);
+        res.status(500).json({ 
+            success: false,
+            msg: "Server error while fetching bookings",
+            error: error.message 
+        });
+    }
+}
 };
 
 module.exports = bookCtrl;

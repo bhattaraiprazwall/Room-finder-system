@@ -4,21 +4,22 @@ import { jwtDecode } from 'jwt-decode';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null);
+  const [loadingUser, setLoadingUser] = useState(true);
 
-    // Loading the user from storage when app starts
-    useEffect(() => {
-        const token = sessionStorage.getItem('token');
-        if (token) {
-            try {
-                const decodedUser = jwtDecode(token);
-                setUser(decodedUser);
-            } catch (error) {
-                console.error("Invalid token:", error);
-                sessionStorage.removeItem('token');
-            }
-        }
-    }, []);
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      try {
+        const decodedUser = jwtDecode(token);
+        setUser(decodedUser);
+      } catch (error) {
+        console.error("Invalid token:", error);
+        sessionStorage.removeItem('token');
+      }
+    }
+    setLoadingUser(false);
+  }, []);
 
     const login = (token) => {
         try {
@@ -39,7 +40,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{ user, login, logout,loadingUser }}>
             {children}
         </AuthContext.Provider>
     );

@@ -55,3 +55,33 @@ export const rejectBooking = async (bookingId) => {
   return response.data;
   
 };
+
+//book fetching for user by userId
+export const UserBooking = async (userId) => {
+  try {
+    const token = sessionStorage.getItem('token'); // Changed to match your auth context
+    if (!token) {
+      throw new Error("Authentication token not found");
+    }
+
+    const response = await axios.get(`/booking-requests/${userId}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.data.success) {
+      throw new Error(response.data.msg || "Failed to fetch bookings");
+    }
+    console.log("Fetched Bookings:", response.data.data);
+    response.data.data.forEach((booking, index) => {
+      console.log(`Booking ${index + 1} Room Info:`, booking.room);
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Booking service error:", error);
+    throw error;
+  }
+};
