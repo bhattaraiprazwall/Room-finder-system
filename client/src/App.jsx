@@ -43,7 +43,8 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/room/:roomId" element={<RoomDetails />} />
               <Route path="/roomInUserSide/:roomId" element={<RoomDetailsinUserSide />} />
-
+              <Route  path="/landlord/booking-requests" element={ <BookedRoomsPage />}/>
+              <Route  path="/profile" element={ <OwnerProfile />}/>
               {/* Admin only routes */}
               <Route
                 path="/landlord"
@@ -61,14 +62,7 @@ const App = () => {
                   </AuthorizationGuard>
                 }
               />
-              <Route
-                path="/landlord/booking-requests"
-                element={
-                  <AuthorizationGuard allowedRoles={["admin"]}>
-                    <BookedRoomsPage />
-                  </AuthorizationGuard>
-                }
-              />
+             
               
 
 
@@ -81,14 +75,14 @@ const App = () => {
                   </AuthorizationGuard>
                 }
               />
-              <Route
+              {/* <Route
                 path="/Profile"
                 element={
                   <AuthorizationGuard allowedRoles={["user"]}>
                     <OwnerProfile />
                   </AuthorizationGuard>
                 }
-              />
+              /> */}
               <Route
                 path="/updateroom/:roomId"
                 element={

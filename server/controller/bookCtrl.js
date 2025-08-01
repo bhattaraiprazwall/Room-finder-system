@@ -11,8 +11,6 @@ const bookCtrl = {
         return res.status(401).json({ msg: "User not authenticated" });
       }
 
-      console.log("User details: ", req.user);
-
       const user = await User.findById(req.user.id);
 
       if (!user) {
@@ -41,8 +39,8 @@ const bookCtrl = {
           .json({ msg: "Room owner information is incomplete" });
       }
 
-      console.log(`Owner's email: ${room.owner.email}`);
-      console.log(`User's email: ${user.email}`);
+      // console.log(`Owner's email: ${room.owner.email}`);
+      // console.log(`User's email: ${user.email}`);
 
       const newBookingRequest = new Book({
         user: req.user.id,
@@ -91,7 +89,7 @@ const bookCtrl = {
              style="padding:10px 15px; background-color:red; color:white; text-decoration:none;">Reject</a>
         `
       );
-      console.log(room.owner.email);
+      // console.log(room.owner.email);
       res.status(201).json(newBookingRequest);
     } catch (error) {
       console.error("Error creating booking request:", error.message);
@@ -102,6 +100,7 @@ const bookCtrl = {
   RequestAccept: async (req, res) => {
     try {
       const { bookingId } = req.params;
+      console.log("reject id:", bookingId);
       const booking = await Book.findById(bookingId).populate("user");
 
       if (!booking) {
@@ -134,7 +133,7 @@ const bookCtrl = {
   RequestRejected: async (req, res) => {
     try {
       const { bookingId } = req.params;
-
+      console.log("reject id:", bookingId);
       const booking = await Book.findById(bookingId).populate("user");
       if (!booking) {
         return res.status(404).json({ msg: "Booking not found" });
@@ -198,18 +197,20 @@ const bookCtrl = {
       res.status(500).json({ error: error.message });
     }
   },
-  getBookedRoom: async (req, res) => {
-    try {
-      const books = await Book.find();
-      if (books.length === 0) {
-        return res.status(404).json({ msg: "No books found for this owner" });
-      }
-      res.json(books);
-      console.log("books",books);
-    } catch (error) {
-      res.status(500).json({ msg: error.message });
-    }
+getBookedRoom: async (req, res) => {
+  try {
+    const books = await Book.find()
+      .populate("user", "name email img")  // populate user fields
+      .populate("room", "location price title"); // populate room fields
+
+    res.json(books);
+  } catch (error) {
+    console.error("Error fetching bookings:", error.message);
+    res.status(500).json({ msg: error.message });
   }
+}
+
+
 };
 
 module.exports = bookCtrl;

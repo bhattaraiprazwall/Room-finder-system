@@ -25,7 +25,7 @@ const handleLogout = () => {
           <Link to="/RoomCreate" className={navLinkClass('add-room')}>Add Room</Link>
           <Link to="/admin/my-rooms" className={navLinkClass('my-rooms')}>My Rooms</Link>
           <Link to="/landlord/booking-requests" className={navLinkClass('booking-requests')}>Booking Requests</Link>
-          <Link to="/admin/profile" className={navLinkClass('profile')}>Profile</Link>
+          <Link to="/profile" className={navLinkClass('profile')}>Profile</Link>
           <Link to="/" onClick={handleLogout} className="px-4 py-2 rounded-md hover:bg-red-600 transition">Logout</Link>
         </nav>
       </aside>
