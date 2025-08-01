@@ -3,51 +3,51 @@ import { register } from "../Services/Auth";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-    const navigate = useNavigate();
-    const [data, setData] = useState({
-         
-        name: "",
-        email: "",
-        password: "",
-        role: "",
-        MobileNumber:"",
-        img:null,
-    })
+  const navigate = useNavigate();
+  const [data, setData] = useState({
 
-    const handle = (e) => {
-       
-        const {name , value} = e.target
-          setData({...data, [name]: value})
+    name: "",
+    email: "",
+    password: "",
+    role: "",
+    MobileNumber: "",
+    img: null,
+  })
+
+  const handle = (e) => {
+
+    const { name, value } = e.target
+    setData({ ...data, [name]: value })
   }
-  
-     const handleImageChange = (e) => {
-      const file = e.target.files[0];
-      setData({...data, img: file });
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setData({ ...data, img: file });
   }
-  
-    const handleSubmit = async(e) => {
-           
-      e.preventDefault();
-      
-      const formData = new FormData()
-      formData.append("name", data.name)
-      formData.append("email", data.email)
-      formData.append("password", data.password)
-      formData.append("role", data.role)
-      formData.append("MobileNumber", data.MobileNumber)
-      formData.append("img", data.img)
-      const response = await register(formData)
-          console.log(response);
-         setData({
-            name: "",
-            email: "",
-            password: "",
-            role: "",
-          MobileNumber: "",
-           img:null
-        })
-        navigate("/login")
-    }
+
+  const handleSubmit = async (e) => {
+
+    e.preventDefault();
+
+    const formData = new FormData()
+    formData.append("name", data.name)
+    formData.append("email", data.email)
+    formData.append("password", data.password)
+    formData.append("role", data.role)
+    formData.append("MobileNumber", data.MobileNumber)
+    formData.append("img", data.img)
+    const response = await register(formData)
+    console.log(response);
+    setData({
+      name: "",
+      email: "",
+      password: "",
+      role: "",
+      MobileNumber: "",
+      img: null
+    })
+    navigate("/login")
+  }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
@@ -102,7 +102,7 @@ const Register = () => {
           </div>
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-               Mobile Number
+              Mobile Number
             </label>
             <input
               type="number"
@@ -129,9 +129,11 @@ const Register = () => {
             >
               <option value="">Select a role</option>
               <option value="user">User</option>
-              <option value="admin">Admin</option>
+              <option value="admin">Landlord</option>
+
+
             </select>
-          </div>   
+          </div>
           <div>
             <label htmlFor="image" className="block text-sm font-medium text-gray-700">
               Profile Picture

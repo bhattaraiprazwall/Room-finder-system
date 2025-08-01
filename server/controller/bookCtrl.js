@@ -198,6 +198,18 @@ const bookCtrl = {
       res.status(500).json({ error: error.message });
     }
   },
+  getBookedRoom: async (req, res) => {
+    try {
+      const books = await Book.find();
+      if (books.length === 0) {
+        return res.status(404).json({ msg: "No books found for this owner" });
+      }
+      res.json(books);
+      console.log("books",books);
+    } catch (error) {
+      res.status(500).json({ msg: error.message });
+    }
+  }
 };
 
 module.exports = bookCtrl;

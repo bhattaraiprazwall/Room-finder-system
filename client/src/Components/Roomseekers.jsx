@@ -18,7 +18,7 @@ const Roomseekers = () => {
     try {
       const response = await axios.get(`http://localhost:5000/room/allRoom`);
       console.log(response);
-        const  roomData = response.data;
+      const roomData = response.data;
       SetRoom(roomData);
       const randomRooms = [...roomData]
         .sort(() => 0.5 - Math.random())
@@ -31,37 +31,45 @@ const Roomseekers = () => {
     }
   };
 
-  useEffect(() => {
+useEffect(() => {
+  const reloaded = window.sessionStorage.getItem("reloadedOnce");
+
+  if (!reloaded) {
+    window.sessionStorage.setItem("reloadedOnce", "true");
+    window.location.reload();
+  } else {
     fetchRooms();
-  }, []);
+  }
+}, []);
+
 
   const handleSearch = () => {
     if (location === "") {
-         setFilteredRooms(room); 
-       }
+      setFilteredRooms(room);
+    }
     else {
       const filtered = room.filter((room) =>
         room.location.toLowerCase().includes(location.toLowerCase())
       );
       setFilteredRooms(filtered);
-       }
+    }
   }
-   
+
   const handleViewDetails = (roomId) => {
-    navigate(`/roominUserSide/${roomId}`); 
+    navigate(`/roominUserSide/${roomId}`);
   };
-   
+
   if (loading) {
     return <p>Loading...</p>;
-  
-}
+
+  }
   return (
     <>
-        <div className="bg-gray-100 min-h-screen  flex flex-col">
-        <nav className="bg-gray-800 p-4 shadow-md">
+      <div className="bg-gray-100 min-h-screen  flex flex-col">
+        {/* <nav className="bg-gray-800 p-4 shadow-md">
           <div className="container mx-auto flex justify-between items-center">
             <div className="text-white text-lg font-semibold">
-              <h1 className="font-bold text-2xl drop-shadow-2xl">Homefinder</h1>
+              <h1 className="font-bold text-2xl drop-shadow-2xl">Room Finder</h1>
             </div>
             <div className="flex space-x-4">
               <Link
@@ -90,7 +98,7 @@ const Roomseekers = () => {
               </Link>
             </div>
           </div>
-        </nav>
+        </nav> */}
 
         <div className="flex-grow">
           <div>
@@ -119,19 +127,19 @@ const Roomseekers = () => {
                   className="bg-white p-4 rounded-lg shadow-lg"
                 >
                   <img
-                    src={room.frontimg} 
+                    src={room.frontimg}
                     alt={room.title}
                     className="w-full h-48 object-cover rounded-lg mb-4"
                   />
                   <h2 className="text-xl font-bold">{room.title}</h2>
                   <p>{room.location}</p>
                   <p className="font-semibold text-lg text-blue-600">
-                  ₹{room.price}
+                    ₹{room.price}
                   </p>
                   <button
                     className="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-all duration-300"
                     onClick={() => handleViewDetails(room._id)}
-                  >  
+                  >
                     View Details
                   </button>
                 </div>
@@ -143,16 +151,16 @@ const Roomseekers = () => {
             )}
           </div>
         </div>
-       
+
         <div className=" mt-20" >
-             <EnhancedQuoteSection/>
+          <EnhancedQuoteSection />
         </div>
         <div className=" mt-20">
-              <InfoBanner/>
-          </div>
+          <InfoBanner />
+        </div>
         <div>
-                <Footer/>
-              </div>
+          <Footer />
+        </div>
       </div>
     </>
   );

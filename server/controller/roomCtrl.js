@@ -16,7 +16,7 @@ const roomCtrl = {
     } = req.body;
 
     try {
-      
+
       let frontimageUrl = null;
       if (req.files && req.files["frontimg"] && req.files["frontimg"][0]?.path) {
         const response = await uploadCloudinary(req.files["frontimg"][0].path);
@@ -30,20 +30,20 @@ const roomCtrl = {
         return res.status(400).json({ msg: "No front image file uploaded" });
       }
 
-     
-let videoUrl = null;
-if (req.files && req.files["video"] && req.files["video"][0]?.path) {
-  const videoResponse = await uploadCloudinary(req.files["video"][0].path);
-  if (videoResponse && videoResponse.url) {
-    videoUrl = videoResponse.url;
-  } else {
-    return res.status(500).json({ msg: "Video upload failed" });
-  }
-} else {
-  console.log("No video file uploaded");
-  
-  return res.status(400).json({ msg: "No video file uploaded" });
-}
+
+      let videoUrl = null;
+      if (req.files && req.files["video"] && req.files["video"][0]?.path) {
+        const videoResponse = await uploadCloudinary(req.files["video"][0].path);
+        if (videoResponse && videoResponse.url) {
+          videoUrl = videoResponse.url;
+        } else {
+          return res.status(500).json({ msg: "Video upload failed" });
+        }
+      } else {
+        console.log("No video file uploaded");
+
+        return res.status(400).json({ msg: "No video file uploaded" });
+      }
 
       const newRoom = new Room({
         owner,
@@ -53,7 +53,7 @@ if (req.files && req.files["video"] && req.files["video"][0]?.path) {
         available,
         additionalInformation,
         frontimg: frontimageUrl,
-        video: videoUrl, 
+        video: videoUrl,
       });
       await newRoom.save();
       console.log("Room created..");
@@ -138,20 +138,21 @@ if (req.files && req.files["video"] && req.files["video"][0]?.path) {
 
   getRoom: async (req, res) => {
     try {
-            const roomId = req.params.id;
-      const room = await Room.findById(roomId);
+      const roomId = req.params.id;
+      const room = await Room.findById(roomId).populate("owner"); // Populates the owner info
+
       if (!room) {
         return res.status(404).json({ msg: "Room not found" });
       }
+
       res.json(room);
-      
     } catch (error) {
       console.error(`Error fetching room with ID ${req.params.id}:`, error);
       res.status(500).json({ msg: error.message });
-    }       
-  },  
+    }
+  },
 
-   getRoomsByOwner: async (req, res) => {
+  getRoomsByOwner: async (req, res) => {
     const ownerId = req.params.ownerId;
     try {
       const rooms = await Room.find({ owner: ownerId });
@@ -162,7 +163,7 @@ if (req.files && req.files["video"] && req.files["video"][0]?.path) {
     } catch (error) {
       res.status(500).json({ msg: error.message });
     }
-  },    
+  },
 
   getAllRoom: async (req, res) => {
     // const ownerId = req.params.ownerId;

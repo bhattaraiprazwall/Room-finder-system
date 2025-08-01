@@ -1,11 +1,13 @@
 import React, { useContext, useState } from "react";
-import { login } from "../Services/Auth"; // Ensure this path is correct
+import { login as authServiceLogin } from "../Services/Auth"; // Renamed to avoid conflict
 import { configContext } from "../Context/ConfigContext";
+import { AuthContext } from "../Context/AuthContext"; // Added AuthContext import
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const { setDetails, setConfig } = useContext(configContext);
+  const { login: authLogin } = useContext(AuthContext); // Get login from AuthContext
   const navigate = useNavigate();
 
   const [data, setData] = useState({ email: "", password: "" });
@@ -20,15 +22,17 @@ const Login = () => {
     setError("");
 
     try {
-      const res = await login(data);
+      const res = await authServiceLogin(data);
       console.log('Login response:', res);
 
-      if (!res || !res.accesstoken) {
-        throw new Error("Unexpected response structure");
+      if (!res?.accesstoken) {
+        throw new Error("Invalid response from server");
       }
 
       const token = res.accesstoken;
-      sessionStorage.setItem("token", token);
+
+      // Call AuthContext login which handles storage and user state
+      authLogin(token); // THIS IS CRUCIAL FOR NAVBAR UPDATE
 
       setConfig({
         headers: {
@@ -39,23 +43,21 @@ const Login = () => {
 
       const userDetails = await fetchUserDetails(token);
       setDetails(userDetails);
+      console.log("User details", userDetails);
 
-      navigate(userDetails.role === 'admin' ? '/ownerDashboard' : '/Roomseekers');
+      // Navigate after successful auth
+      navigate(userDetails.role === 'admin' ? '/landlord' : '/Roomseekers');
 
-      setLoginStatus("Login successful!");
       toast.success("Login successful!");
-      setData({ email: "", password: "" });
     } catch (err) {
-      setError("Login failed. Please try again.");
+      setError(err.message || "Login failed. Please try again.");
       console.error("Login error:", err);
+      toast.error("Login failed");
     } finally {
       setLoading(false);
-      setTimeout(() => {
-        setLoginStatus("");
-      }, 3000);
+      setTimeout(() => setLoginStatus(""), 3000);
     }
   };
-
   const fetchUserDetails = async (token) => {
     try {
       const res = await fetch("http://localhost:5000/user/infor", {

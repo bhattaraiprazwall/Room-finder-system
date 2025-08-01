@@ -18,6 +18,7 @@ const PORT = process.env.PORT || 3000;
 dbConnection();
 
 app.use(express.json());
+app.use("/landlord",router)
 
 app.use("/user", require("./routes/user"));
 app.use("/room", require("./routes/room"));
@@ -28,4 +29,4 @@ const server = http.createServer(app);
 
 server.listen(PORT, () => {
   console.log(`SERVER IS RUNNING ON PORT ${PORT}...`);
-});
+}); 

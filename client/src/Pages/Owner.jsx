@@ -2,10 +2,11 @@ import axios from "axios";
 import { useContext, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { configContext } from "../Context/ConfigContext";
+import AdminDashboard from "../Components/adminDashboard";
 
 const Owner = () => {
   const { details } = useContext(configContext);
-
+  console.log("details", details);
   const [data, setData] = useState({
     location: "",
     price: "",
@@ -39,35 +40,37 @@ const Owner = () => {
   };
 
   const handleSubmit = async (e) => {
-    
-    e.preventDefault();
-      console.log("Form submitted"); // <-- ✅ Add this
 
-      
+    e.preventDefault();
+
+
 
     if (!token) {
       console.log("running...");
       toast.error("No authentication token found.");
       return;
     }
-    
 
-    if (!details || !details._id) {
-      toast.error("Owner details not found.");
-      return;
-    }
+
+
+
+    const decoded = JSON.parse(atob(token.split('.')[1]));
+    // console.log("Decoded token:", decoded);
+    const ownerid = decoded.id;
+    console.log("Form submitted", ownerid); // <-- ✅ Add this
+
 
     // if (data.price < 1) {
     //   toast.error("Price must be a positive number.");
     //   return;
     // }
-     
+
     const formData = new FormData();
     formData.append("location", data.location);
     formData.append("price", data.price);
     formData.append("additionalInformation", data.additionalInformation);
     formData.append("frontimg", data.frontimg);
-    formData.append("owner", details._id);
+    formData.append("owner", ownerid);
 
     // Append amenities one by one
     const amenitiesArray = data.amenities.split(",").map((a) => a.trim());
@@ -109,8 +112,15 @@ const Owner = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
+  <div className="flex min-h-screen">
+    {/* Sidebar - AdminDashboard */}
+    <div className="w-64 flex-none">
+      <AdminDashboard />
+    </div>
+
+    {/* Main Content - Create Room Form */}
+    <div className="flex-1 p-8 bg-gray-100">
+      <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8">
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-900 underline">Create Your Rooms</h2>
         <form onSubmit={handleSubmit}>
           <div>
@@ -190,7 +200,8 @@ const Owner = () => {
         </form>
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default Owner;

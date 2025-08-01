@@ -16,7 +16,7 @@ const OwnerDashboard = () => {
 
   return (
     <div className="bg-blue-50 h-screen w-full">
-      <nav className="bg-gray-800 p-4 shadow-md">
+      {/* <nav className="bg-gray-800 p-4 shadow-md">
         <div className="container mx-auto flex justify-between items-center">
           <div className="text-white text-lg font-semibold">
               
@@ -50,7 +50,7 @@ const OwnerDashboard = () => {
             </Link>
           </div>
         </div>
-      </nav>
+      </nav> */}
       <div className="Home h-[90%] w-[100%] relative">
         <div className="h-[15%] w-[100%] flex items-center justify-center">
           <h1 className="font-bold text-gray-900 text-4xl">
@@ -64,7 +64,7 @@ const OwnerDashboard = () => {
           </p>
         </div>
       </div>
-      <div className="h-screen w-full bg-slate-400"></div>
+      {/* <div className="h-screen w-full bg-slate-400"></div> */}
       <div>
             <Footer/>
           </div>
