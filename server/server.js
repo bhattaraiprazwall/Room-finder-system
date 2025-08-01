@@ -18,6 +18,7 @@ const PORT = process.env.PORT || 5000;
 dbConnection();
 
 app.use(express.json());
+app.use("/landlord",router)
 
 // ✅ Your routes
 app.use("/user", require("./routes/user"));
