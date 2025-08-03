@@ -115,9 +115,9 @@ const App = () => {
                 }
               />
               <Route
-                path="/updateroom/:roomId"
+                path="/updateroom"
                 element={
-                  <AuthorizationGuard allowedRoles={["user"]}>
+                  <AuthorizationGuard allowedRoles={["admin"]}>
                     <UpdateRoom />
                   </AuthorizationGuard>
                 }

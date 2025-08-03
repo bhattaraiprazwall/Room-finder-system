@@ -78,7 +78,9 @@ const roomCtrl = {
       amenities,
       additionalInformation,
     } = req.body;
-    const roomId = req.params.id;
+    const {roomId} = req.params;
+    console.log("reqbody",req.body);
+    console.log("reqpara",roomId);
 
     console.log(`Updating room with ID: ${roomId}`);
     console.log(`Update details: ${JSON.stringify(req.body)}`);
@@ -115,7 +117,7 @@ const roomCtrl = {
           location,
           price,
           amenities,
-          available,
+          // available,
           additionalInformation,
           // frontimg: frontimageUrl || undefined,
           // video: videoUrl || undefined,

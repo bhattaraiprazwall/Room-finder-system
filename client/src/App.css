@@ -40,3 +40,5 @@ a#root {
 .read-the-docs {
   color: #888;
 }
+
+@import "leaflet/dist/leaflet.css";

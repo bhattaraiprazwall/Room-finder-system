@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Home from "../assets/Home.jpg";
+import {toast} from "react-toastify";
 
 const RoomDetailsinUserSide = () => {
   const { roomId } = useParams();
@@ -64,7 +65,8 @@ const RoomDetailsinUserSide = () => {
         }
       );
 
-      setRequestStatus("Your booking request has been sent successfully!");
+      // setRequestStatus("Your booking request has been sent successfully!");
+      toast.success("Your booking request has been sent successfully..");
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.message || err.message);
@@ -107,7 +109,7 @@ const RoomDetailsinUserSide = () => {
             />
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
               <h1 className="text-3xl font-bold text-white">Room Details</h1>
-              <p className="text-gray-200 mt-1">{formatLocation(location)}</p>
+              <p className="text-gray-200 mt-1">{formatLocation(location.address)}</p>
             </div>
           </div>
 

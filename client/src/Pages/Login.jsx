@@ -46,7 +46,7 @@ const Login = () => {
       console.log("User details", userDetails);
 
       // Navigate after successful auth
-      navigate(userDetails.role === 'admin' ? '/landlord' : '/Roomseekers');
+      navigate(userDetails.role === 'admin' ? '/landlord/my-rooms' : '/Roomseekers');
 
       toast.success("Login successful!");
     } catch (err) {

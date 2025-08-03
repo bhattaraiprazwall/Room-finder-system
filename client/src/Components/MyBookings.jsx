@@ -44,7 +44,7 @@ const MyBookings = () => {
     <div className="max-w-6xl mx-auto px-4 py-8">
       <div className="text-center mb-10">
         <h2 className="text-3xl font-bold text-gray-800 mb-2">My Bookings</h2>
-        <p className="text-gray-600">Manage and view all your property bookings</p>
+        <p className="text-gray-600">Manage and view all your room bookings</p>
       </div>
 
       {bookings.length === 0 ? (
