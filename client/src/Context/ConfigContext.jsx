@@ -26,13 +26,20 @@ export const configContext = createContext();
 const ConfigContextProvider = ({ children }) => {
   const [config, setConfig] = useState({});
   const [details, setDetails] = useState({});
+  const [id, setId] = useState({});
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
+    console.log("ttokennn:", token)
     if (token) {
       try {
         const decoded = jwtDecode(token); // this gives you { name, email, role, _id, etc. }
         setDetails(decoded); // ✅ Set user details in context
+        setId(decoded.id);
+
+            console.log("ttokennn ddddd:", decoded.id)
+            console.log("ttokennn ddddd:", details)
+
       } catch (error) {
         console.error("Failed to decode token:", error);
       }
@@ -40,7 +47,7 @@ const ConfigContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <configContext.Provider value={{ config, setConfig, details, setDetails }}>
+    <configContext.Provider value={{ config, setConfig, details, setDetails, id }}>
       {children}
     </configContext.Provider>
   );

@@ -11,7 +11,7 @@ router.post("/register", upload.single("img"), userCtrl.register)
 router.post("/login", userCtrl.login)
 router.get('/logout',userCtrl.logout)
 router.get('/refresh_token', userCtrl.refreshtoken) 
-router.get('/infor',auth,userCtrl.getUser) 
+router.get('/infor',auth,userCtrl.getUser)
 // router.post("/request", auth, bookCtrl.createBookingRequest)
 // router.put("/response", authAdmin, bookCtrl.respondToBookingRequest)
 

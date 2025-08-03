@@ -1,53 +1,67 @@
 import { useState } from "react";
 import { register } from "../Services/Auth";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
   const navigate = useNavigate();
   const [data, setData] = useState({
-
     name: "",
     email: "",
     password: "",
     role: "",
     MobileNumber: "",
     img: null,
-  })
+  });
 
   const handle = (e) => {
-
-    const { name, value } = e.target
-    setData({ ...data, [name]: value })
-  }
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setData({ ...data, img: file });
-  }
+  };
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
 
-    const formData = new FormData()
-    formData.append("name", data.name)
-    formData.append("email", data.email)
-    formData.append("password", data.password)
-    formData.append("role", data.role)
-    formData.append("MobileNumber", data.MobileNumber)
-    formData.append("img", data.img)
-    const response = await register(formData)
-    console.log(response);
-    setData({
-      name: "",
-      email: "",
-      password: "",
-      role: "",
-      MobileNumber: "",
-      img: null
-    })
-    navigate("/login")
-  }
+    if (!data.img) {
+      toast.warn("Please upload a profile picture.");
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("email", data.email);
+      formData.append("password", data.password);
+      formData.append("role", data.role);
+      formData.append("MobileNumber", data.MobileNumber);
+      formData.append("img", data.img);
+
+      const response = await register(formData);
+      console.log(response);
+
+      toast.success("Registration successful!");
+      setData({
+        name: "",
+        email: "",
+        password: "",
+        role: "",
+        MobileNumber: "",
+        img: null,
+      });
+
+      navigate("/login");
+    } catch (error) {
+      console.error(error);
+      toast.error("Registration failed. Please try again.");
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
@@ -130,8 +144,6 @@ const Register = () => {
               <option value="">Select a role</option>
               <option value="user">User</option>
               <option value="admin">Landlord</option>
-
-
             </select>
           </div>
           <div>

@@ -1,12 +1,16 @@
-import axios from "axios";
-import { useContext, useState, useEffect } from "react";
-import { toast } from "react-toastify";
+import React, { useContext, useState, useEffect } from "react";
 import { configContext } from "../Context/ConfigContext";
-import AdminDashboard from "../Components/adminDashboard";
+import { toast } from "react-toastify";
+import GoogleMapPicker from "../Components/GoogleMapPicker";
+import { useNavigate } from "react-router-dom";
 
 const Owner = () => {
   const { details } = useContext(configContext);
-  console.log("details", details);
+  const [showMap, setShowMap] = useState(false);
+  const [token, setToken] = useState("");
+  const [ownerId, setOwnerId] = useState("");
+  const navigate=useNavigate();
+
   const [data, setData] = useState({
     location: "",
     price: "",
@@ -14,194 +18,196 @@ const Owner = () => {
     additionalInformation: "",
     frontimg: null,
     video: null,
+    Longitude: "",
+    Latitude: "",
   });
-
-  const [loading, setLoading] = useState(false);
-  const [token, setToken] = useState("");
 
   useEffect(() => {
     const storedToken = sessionStorage.getItem("token");
-    setToken(storedToken);
+    if (storedToken) {
+      setToken(storedToken);
+      try {
+        const decoded = JSON.parse(atob(storedToken.split('.')[1]));
+        setOwnerId(decoded.id); // Set owner ID from token
+      } catch (err) {
+        toast.error("Invalid token.");
+      }
+    } else {
+      toast.error("User not authenticated.");
+    }
   }, []);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setData({ ...data, [name]: value });
+    const { name, value, files } = e.target;
+    if (files && files.length > 0) {
+      setData((prev) => ({ ...prev, [name]: files[0] }));
+    } else {
+      setData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setData({ ...data, frontimg: file });
-  };
-
-  const handleChangeVideo = (e) => {
-    const file = e.target.files[0];
-    setData({ ...data, video: file });
+  const handleLocationSelect = (coords) => {
+    setData((prev) => ({
+      ...prev,
+      Latitude: coords.lat.toString(),
+      Longitude: coords.lng.toString(),
+    }));
+    setShowMap(false);
   };
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
 
-
-
-    if (!token) {
-      console.log("running...");
-      toast.error("No authentication token found.");
+    if (!ownerId) {
+      toast.error("Owner ID not found.");
       return;
     }
 
-
-
-
-    const decoded = JSON.parse(atob(token.split('.')[1]));
-    // console.log("Decoded token:", decoded);
-    const ownerid = decoded.id;
-    console.log("Form submitted", ownerid); // <-- ✅ Add this
-
-
-    // if (data.price < 1) {
-    //   toast.error("Price must be a positive number.");
-    //   return;
-    // }
-
-    const formData = new FormData();
-    formData.append("location", data.location);
-    formData.append("price", data.price);
-    formData.append("additionalInformation", data.additionalInformation);
-    formData.append("frontimg", data.frontimg);
-    formData.append("owner", ownerid);
-
-    // Append amenities one by one
-    const amenitiesArray = data.amenities.split(",").map((a) => a.trim());
-    amenitiesArray.forEach((a, index) => {
-      formData.append(`amenities[${index}]`, a);
-    });
-
-    if (data.video) {
-      formData.append("video", data.video);
+    const form = new FormData();
+    for (const key in data) {
+      form.append(key, data[key]);
     }
 
-    setLoading(true);
+    form.append("owner", ownerId); // ✅ Append owner ID
 
     try {
-      const res = await axios.post("http://localhost:5000/room/create", formData, {
+      const res = await fetch("http://localhost:5000/room/create", {
+        method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
         },
+        body: form,
       });
-
-      toast.success("Room added successfully!");
-
-      // Reset form
-      setData({
-        location: "",
-        price: "",
-        amenities: "",
-        additionalInformation: "",
-        frontimg: null,
-        video: null,
-      });
+//  toast.success("Room Added Successfully first");
+      const result = await res.json();
+      if (res.ok) {
+        toast.success("Room Added Successfully");
+        setData({
+          location: "",
+          price: "",
+          amenities: "",
+          additionalInformation: "",
+          frontimg: null,
+          video: null,
+          Longitude: "",
+          Latitude: "",
+        });
+        navigate("/landlord");
+      } else {
+        toast.error(result.message || "Something went wrong");
+      }
     } catch (error) {
-      console.error("Error:", error.response?.data || error.message);
-      toast.error("Error creating room: " + (error.response?.data?.message || error.message));
-    } finally {
-      setLoading(false);
+      console.error(error);
+      toast.error("Network Error");
     }
   };
 
   return (
-  <div className="flex min-h-screen">
-    {/* Sidebar - AdminDashboard */}
-    <div className="w-64 flex-none">
-      <AdminDashboard />
-    </div>
+    <div className="max-w-2xl mx-auto p-4">
+      <h2 className="text-2xl font-bold mb-4">Add Room</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <input
+          type="text"
+          name="location"
+          value={data.location}
+          onChange={handleChange}
+          placeholder="Location"
+          className="w-full px-3 py-2 border rounded"
+          required
+        />
+        <input
+          type="number"
+          name="price"
+          value={data.price}
+          onChange={handleChange}
+          placeholder="Price"
+          className="w-full px-3 py-2 border rounded"
+          required
+        />
+        <input
+          type="text"
+          name="amenities"
+          value={data.amenities}
+          onChange={handleChange}
+          placeholder="Amenities"
+          className="w-full px-3 py-2 border rounded"
+        />
+        <textarea
+          name="additionalInformation"
+          value={data.additionalInformation}
+          onChange={handleChange}
+          placeholder="Additional Information"
+          className="w-full px-3 py-2 border rounded"
+        ></textarea>
 
-    {/* Main Content - Create Room Form */}
-    <div className="flex-1 p-8 bg-gray-100">
-      <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8">
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-900 underline">Create Your Rooms</h2>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Location</label>
-            <input
-              type="text"
-              required
-              name="location"
-              placeholder="Room location in details"
-              onChange={handleChange}
-              value={data.location}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-            />
+        <div className="flex gap-2">
+          <input
+            type="file"
+            name="frontimg"
+            accept="image/*"
+            onChange={handleChange}
+            className="w-1/2"
+          />
+          <input
+            type="file"
+            name="video"
+            accept="video/*"
+            onChange={handleChange}
+            className="w-1/2"
+          />
+        </div>
+
+        <div className="flex gap-2">
+          <input
+            type="text"
+            name="Latitude"
+            value={data.Latitude}
+            readOnly
+            className="w-1/2 px-3 py-2 border rounded bg-gray-100"
+            placeholder="Latitude"
+          />
+          <input
+            type="text"
+            name="Longitude"
+            value={data.Longitude}
+            readOnly
+            className="w-1/2 px-3 py-2 border rounded bg-gray-100"
+            placeholder="Longitude"
+          />
+        </div>
+
+        <button
+          type="button"
+          className="bg-blue-600 text-white px-4 py-2 rounded"
+          onClick={() => setShowMap(true)}
+        >
+          Choose Location on Map
+        </button>
+
+        <button
+          type="submit"
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        >
+          Submit
+        </button>
+      </form>
+
+      {/* Map Modal */}
+      {showMap && (
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl">
+            <GoogleMapPicker onLocationSelect={handleLocationSelect} />
+            <button
+              className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+              onClick={() => setShowMap(false)}
+            >
+              Cancel
+            </button>
           </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">Price</label>
-            <input
-              type="number"
-              required
-              name="price"
-              placeholder="Price"
-              onChange={handleChange}
-              value={data.price}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">Amenities</label>
-            <input
-              type="text"
-              required
-              name="amenities"
-              placeholder="Amenities (comma-separated)"
-              onChange={handleChange}
-              value={data.amenities}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">Additional Information</label>
-            <input
-              type="text"
-              required
-              name="additionalInformation"
-              placeholder="Your Conditions or additional information"
-              onChange={handleChange}
-              value={data.additionalInformation}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">Home Front Image</label>
-            <input
-              type="file"
-              required
-              name="frontimg"
-              onChange={handleImageChange}
-              className="mt-1 block w-full text-sm text-gray-500"
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">Room Video</label>
-            <input
-              type="file"
-              name="video"
-              onChange={handleChangeVideo}
-              className="mt-1 block w-full text-sm text-gray-500"
-            />
-          </div>
-          <button
-            className="w-full mt-8 px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700"
-            type="submit"
-            disabled={loading}
-          >
-            {loading ? "Submitting..." : "Submit"}
-          </button>
-        </form>
-      </div>
+        </div>
+      )}
     </div>
-  </div>
-);
+  );
 };
 
 export default Owner;

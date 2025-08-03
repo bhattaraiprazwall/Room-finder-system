@@ -1,14 +1,30 @@
+// const express = require("express");
+// const bookCtrl = require("../controller/bookCtrl");
+// const auth = require("../middleware/auth");
+// const authAdmin = require("../middleware/adminAuth");
+// const router = express.Router();
+// router.post("/bookrequest/:roomId", auth, bookCtrl.createBookingRequest);
+// router.get("/bookings/:bookingId/accept", authAdmin, bookCtrl.RequestAccept)
+// router.get("/bookings/:bookingId/reject", authAdmin, bookCtrl.RequestRejected)
+// router.post("/submitform", auth, bookCtrl.submitdataform);
+// router.get("/booking-requests", auth, bookCtrl.getBookedRoom);
+// router.get("/booking-requests/:userId", auth, bookCtrl.getBookedRoomUser);
+
+
+// module.exports = router;
+
 const express = require("express");
 const bookCtrl = require("../controller/bookCtrl");
 const auth = require("../middleware/auth");
 const authAdmin = require("../middleware/adminAuth");
 const router = express.Router();
 router.post("/bookrequest/:roomId", auth, bookCtrl.createBookingRequest);
-router.get("/bookings/:bookingId/accept", authAdmin, bookCtrl.RequestAccept)
-router.get("/bookings/:bookingId/reject", authAdmin, bookCtrl.RequestRejected)
+router.get("/bookings/:bookingId/accept", bookCtrl.RequestAccept)
+router.get("/bookings/:bookingId/reject", bookCtrl.RequestRejected)
 router.post("/submitform", auth, bookCtrl.submitdataform);
-router.get("/booking-requests", auth, bookCtrl.getBookedRoom);
-router.get("/booking-requests/:userId", auth, bookCtrl.getBookedRoomUser);
+router.get("/booking-requests", bookCtrl.getBookedRoom);
+router.get("/myRooms/:id", bookCtrl.getBookedRoomId);
+
 
 
 module.exports = router;

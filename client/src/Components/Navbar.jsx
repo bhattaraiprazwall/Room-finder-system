@@ -28,7 +28,7 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white shadow-md px-6 py-4 flex justify-between items-center">
-      <Link to="/" className="text-2xl font-bold text-blue-700">
+      <Link to="#z" className="text-2xl font-bold text-blue-700">
         RoomFinder
       </Link>
 

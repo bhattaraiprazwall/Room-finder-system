@@ -20,11 +20,20 @@ import AuthorizationGuard from "./Components/Authentication";
 
 import MyBookings from "./Components/MyBookings";
 import BookedRoomsPage from "./Components/BookingRequestLandlord";
+import LandLordRooms from "./Components/LandLordRooms";
+import LocationPicker from "./Components/GoogleMapPicker";
+import NearbyRooms from "./views/rooms/NearbyRooms";
+import { ToastContainer } from "react-toastify";
+// import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+
+
 
 // Separate component to safely handle navbar rendering
 const NavbarWrapper = () => {
   const { user } = React.useContext(AuthContext);
-  
+
   // Show navbar for:
   // - Non-admin users (when user exists and role isn't admin)
   // - Public pages (when user is null)
@@ -37,6 +46,7 @@ const App = () => {
       <ConfigContextProvider>
         <Router>
           <div className="bg-blue-50">
+            <ToastContainer position="top-right" autoClose={3000} />
             <NavbarWrapper />
             <Routes>
               {/* Public routes */}
@@ -45,8 +55,21 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/room/:roomId" element={<RoomDetails />} />
               <Route path="/roomInUserSide/:roomId" element={<RoomDetailsinUserSide />} />
+              <Route path="/profile" element={<OwnerProfile />} />
+              <Route path="/googlemap" element={<LocationPicker/>}/>
+              <Route path="/nearby" element={<NearbyRooms />} />
+
+
 
               {/* Admin only routes */}
+              <Route
+                path="/landlord/my-rooms"
+                element={
+                  <AuthorizationGuard allowedRoles={["admin"]}>
+                    <LandLordRooms />
+                  </AuthorizationGuard>
+                }
+              />
               <Route
                 path="/landlord"
                 element={
@@ -71,7 +94,7 @@ const App = () => {
                   </AuthorizationGuard>
                 }
               />
-              
+
 
 
               {/* Owner/user routes */}

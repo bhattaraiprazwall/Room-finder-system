@@ -60,8 +60,8 @@ const Footer = () => {
                 <a href="#"><img className='h-9 w-9' src={linkdinlogo} alt="LinkedIn" /></a>
               </div>
               <p className="mt-4">
-                Mobile: +919131694200 <br />
-                Email: homefinder.com
+                Mobile: +977 9860946365 <br />
+                Email: bprajwal965@gmail.com
               </p>
             </div>
           </div>
@@ -70,7 +70,7 @@ const Footer = () => {
 
         
         <div className="border-t border-gray-500 mt-8 pt-4 text-center">
-          <p>© 2024 homefinder.com</p>
+          <p>© 2025 Home Finder</p>
         </div>
       </div>
     </footer>

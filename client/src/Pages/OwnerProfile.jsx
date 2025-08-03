@@ -38,7 +38,7 @@ const OwnerProfile = () => {
     } catch (error) {
       if (error.response) {
         console.error("Error response:", error.response);
-        toast.error(`Error: ${error.response.status} - ${error.response.data.msg || "Failed to fetch rooms"}`);
+        toast.error(`Error: ${error.response.status}- ${error.response.data.msg || "Failed to fetch rooms"}`);
       } else {
         console.error("Request failed:", error);
         toast.error("Error fetching rooms: " + error.message);
@@ -115,7 +115,7 @@ const OwnerProfile = () => {
                 />
                 <div className="p-4">
                   <h3 className="font-bold text-xl mb-2">{room.location}</h3>
-                  <p className="text-gray-700">Price: ₹{room.price} / month</p>
+                  <p className="text-gray-700">Price: Rs.{room.price} / month</p>
                   <p className="text-gray-700">
                     Amenities: {room.amenities.join(", ")}
                   </p>

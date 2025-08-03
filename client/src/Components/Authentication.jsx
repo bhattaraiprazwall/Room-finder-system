@@ -9,9 +9,8 @@ export default function AuthorizationGuard({ children, allowedRoles = ['admin', 
 
   try {
     const decoded = JSON.parse(atob(token.split('.')[1]));
-    console.log("decode token", decoded);
     const userRole = decoded?.role || decoded?.user?.role;
-    console.log("decode ", userRole);
+   
 
     if (!allowedRoles.includes(userRole)) {
       return <Navigate to="/" replace />;

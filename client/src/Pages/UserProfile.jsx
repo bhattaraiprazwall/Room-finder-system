@@ -6,59 +6,70 @@ const UserProfile = () => {
   const { details, setDetails } = useContext(configContext);
   console.log("details", details);
 
-  // ✅ Define the function outside useEffect so it can be reused
   const handleViewUserDetail = async () => {
     try {
       const userDetail = await getUserDetails();
       console.log("Fetched User Detail:", userDetail);
 
       if (userDetail) {
-        setDetails(userDetail); // ✅ set context
+        setDetails(userDetail);
       }
     } catch (error) {
       console.log("Error fetching user detail:", error.message);
     }
   };
 
-  // ✅ Call it on component mount
   useEffect(() => {
     handleViewUserDetail();
   }, []);
 
   return (
-    <div className="h-screen w-full bg-gradient-to-r from-blue-100 to-blue-200 flex justify-center items-center">
-      <div className="bg-white shadow-2xl rounded-lg p-8 max-w-sm w-full transition-transform hover:scale-105 duration-300">
+    <div className="min-h-screen w-full bg-gray-900 flex justify-center items-center p-4">
+      <div className="bg-gray-800 rounded-xl p-6 max-w-md w-full border border-gray-700 shadow-lg hover:shadow-purple-500/20 transition-all duration-300">
         <div className="flex flex-col items-center">
-          <img
-            src={details?.img || "/default-avatar.png"}
-            alt="User Avatar"
-            className="rounded-full w-32 h-32 mb-4 shadow-lg border-4 border-blue-300"
-          />
-          <h2 className="text-2xl font-bold text-gray-800 mb-2 capitalize">
-            {details?.name || "User Name"}
-          </h2>
-          <p className="text-gray-600 mb-4">{details?.email || "Email"}</p>
-          <p className="text-gray-600 mb-4">{details?._id || "User ID"}</p>
-          <p className="text-gray-600 mb-4">{details?.MobileNumber || "Mobile Number"}</p>
-
-          <div className="flex flex-col items-center mt-4">
-            <p className="text-gray-500 mb-2">
-              <span className="font-semibold">Role:</span> {details?.role || "User"}
-            </p>
-            <p className="text-gray-500">
-              <span className="font-semibold">Joined:</span>{" "}
-              {details?.createdAt
-                ? new Date(details.createdAt).toLocaleDateString()
-                : "N/A"}
-            </p>
+          <div className="relative mb-6">
+            <img
+              src={details?.img || "/default-avatar.png"}
+              alt="User Avatar"
+              className="rounded-full w-36 h-36 object-cover ring-4 ring-purple-500/30 hover:ring-purple-500/50 transition-all"
+            />
+            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full">
+              {details?.role || "User"}
+            </div>
           </div>
 
-          {/* ✅ Button to manually refresh details */}
+          <h2 className="text-2xl font-bold text-white mb-1 capitalize">
+            {details?.name || "User Name"}
+          </h2>
+          <p className="text-purple-400 mb-6">{details?.email || "Email"}</p>
+
+          <div className="w-full space-y-3 mb-6">
+            {/* <div className="flex justify-between border-b border-gray-700 pb-2">
+              <span className="text-gray-400">User ID</span>
+              <span className="text-gray-300 font-mono">{details?._id || "N/A"}</span>
+            </div> */}
+            <div className="flex justify-between border-b border-gray-700 pb-2">
+              <span className="text-gray-400">Mobile</span>
+              <span className="text-gray-300">{details?.MobileNumber || "N/A"}</span>
+            </div>
+            <div className="flex justify-between border-b border-gray-700 pb-2">
+              <span className="text-gray-400">Joined</span>
+              <span className="text-gray-300">
+                {details?.createdAt
+                  ? new Date(details.createdAt).toLocaleDateString()
+                  : "N/A"}
+              </span>
+            </div>
+          </div>
+
           <button
             onClick={handleViewUserDetail}
-            className="mt-6 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+            className="w-full py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all flex items-center justify-center gap-2"
           >
-            Refresh Details
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            Refresh Profile
           </button>
         </div>
       </div>
