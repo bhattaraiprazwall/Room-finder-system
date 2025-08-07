@@ -21,7 +21,7 @@ const authAdmin = (req, res, next) => {
 
       req.user = user;
 
-      if (user.role !== "admin") {
+      if (user.role !== "Admin") {
         return res.status(403).json({ msg: "Admin resources access denied" });
       }
 

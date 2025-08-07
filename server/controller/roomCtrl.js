@@ -180,15 +180,38 @@ const roomCtrl = {
   getAllRoom: async (req, res) => {
     // const ownerId = req.params.ownerId;
     try {
+      if(!req.user) {
+        return res.status(403).json({ msg: "Access denied, you are not admin or user" });
+      }
+      console.log("get all room dfndn controler:", req.user);
       const rooms = await Room.find();
       if (rooms.length === 0) {
         return res.status(404).json({ msg: "No rooms found for this owner" });
       }
+      console.log("get all room admin controler:", rooms);
       res.json(rooms);
     } catch (error) {
       res.status(500).json({ msg: error.message });
     }
   },
+
+getAllRoomToUser: async (req, res) => {
+  try {
+    const rooms = await Room.find({ available: true }); // 🔥 Only fetch available rooms
+
+    if (rooms.length === 0) {
+      return res.status(404).json({ msg: "No available rooms found" });
+    }
+
+    console.log("Fetched available rooms:", rooms);
+    res.json(rooms);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+}
+
+
+  
 
 };
 

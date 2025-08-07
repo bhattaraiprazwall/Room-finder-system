@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {toast} from 'react-toastify';
 import {
   getBookingRequests,
   acceptBooking,
@@ -31,6 +32,7 @@ const BookedRoomsPage = () => {
     try {
       await acceptBooking(bookingId);
       fetchBookedRooms();
+      toast.success('Booking accepted successfully');
     } catch (err) {
       setError('Failed to accept booking');
     }
@@ -101,7 +103,7 @@ const BookedRoomsPage = () => {
 
                 <div>
                   <p className="text-sm text-gray-500">Price</p>
-                  <p className="font-medium">${booking.room?.price || '0'} per night</p>
+                  <p className="font-medium">Rs.{booking.room?.price || '0'} per month</p>
                 </div>
 
                 <div>

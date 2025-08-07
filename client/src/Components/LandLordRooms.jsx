@@ -44,7 +44,7 @@ const LandLordRooms = () => {
   };
 
   useEffect(() => {
-    if (details && details.role === "admin") {
+    if (details && details.role === "landlord") {
       fetchRooms();
     } else {
       setLoading(false);
@@ -78,7 +78,7 @@ const LandLordRooms = () => {
 
   if (loading) return <p className="text-center mt-20 text-xl">Loading...</p>;
   if (!details) return <p>Please log in to view your rooms.</p>;
-  if (details.role !== "admin")
+  if (details.role !== "landlord")
     return <p>You are not an owner, so you have no rooms.</p>;
 
   return (

@@ -360,11 +360,12 @@ const Roomseekers = () => {
       }));
 
       setFilteredRooms(formattedRooms);
-      toast.success("Nearby rooms fetched for: " + label);
+      
     } catch (error) {
+      toast.warn("Room not found for  : " + label);
       console.error("Error fetching nearby rooms:", error);
       setFilteredRooms([]);
-      toast.error("Error fetching nearby rooms");
+      // toast.error("Error fetching nearby rooms");
     }
   };
 

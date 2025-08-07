@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 
-export default function AuthorizationGuard({ children, allowedRoles = ['admin', 'user', ] }) {
+export default function AuthorizationGuard({ children, allowedRoles = ['landlord', 'user', ] }) {
   const token = sessionStorage.getItem("token");
 
   if (!token) {

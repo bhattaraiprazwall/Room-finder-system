@@ -127,9 +127,14 @@ export const getNearbyRooms = asyncHandler(async (req, res, next) => {
       const roomLng = room.location.coordinates[0];
 
       const distance = haversineDistance(latitude, longitude, roomLat, roomLng);
+      if(distance <= distanceInKm)
+      console.log("roomLat:", roomLat);
+      console.log("roomLng:", roomLng);
+      console.log("distance:", distance);
       return distance <= distanceInKm;
     });
-
+    
+    console.log("nearby room :", nearbyRooms);
     res.status(200).json({
       status: 'success',
       success: true,

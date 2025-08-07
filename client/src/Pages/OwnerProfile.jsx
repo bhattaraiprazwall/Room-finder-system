@@ -23,7 +23,7 @@ const OwnerProfile = () => {
       if (!token) throw new Error("Token is missing");
 
       const res = await axios.get(
-         `http://localhost:5000/room/getRoomByOwner/${details._id}`,
+         `http://localhost:5000/room/getRoomByOwner/${details.id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -48,7 +48,7 @@ const OwnerProfile = () => {
     }
   };
   useEffect(() => {
-    if (details && details.role === "admin") {
+    if (details && details.role === "landlord") {
       fetchRooms();
     } else {
       setLoading(false);
@@ -63,7 +63,7 @@ const OwnerProfile = () => {
     return <p>Please log in to view your rooms.</p>;
   }
 
-  if (details.role !== "admin") {
+  if (details.role !== "landlord") {
     return <p>You are not an owner, so you have no rooms.</p>;
   }
 
@@ -97,10 +97,10 @@ const OwnerProfile = () => {
             </h1>
           </div>
         </div>
-        <h2 className="mt-16 ml-8 font-bold underline text-4xl text-blue-400">
+        {/* <h2 className="mt-16 ml-8 font-bold underline text-4xl text-blue-400">
           Your Rooms:
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-8 bg-blue-50">
+        </h2> */}
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-8 bg-blue-50">
           {room.length > 0 ? (
             room.map((room) => (
               <div
@@ -134,7 +134,7 @@ const OwnerProfile = () => {
           ) : (
             <p>No rooms available.</p>
           )}
-        </div>
+        </div> */}
       </div>
     </>
   );

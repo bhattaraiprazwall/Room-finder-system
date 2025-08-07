@@ -16,4 +16,13 @@ const {data} = await axios.post( "http://localhost:5000/user/register",
   return data;
 }
 
-export {login , register }
+const adminLogin = async ({ email, password }) => {
+    const response = await axios.post("http://localhost:5000/admin/login",{
+      email,
+      password,
+    });                                    
+  return response.data;
+  
+};
+
+export {login , register, adminLogin }

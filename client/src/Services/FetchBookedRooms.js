@@ -16,7 +16,7 @@ export const getBookingRequests = async () => {
 
 export const acceptBooking = async (bookingId) => {
   const token =await localStorage.getItem('token');
-    console.log("acceprt service:", token, bookingId)
+    console.log("accept service:", token, bookingId)
 
   const response = await axios.get(
     `http://localhost:5000/book/bookings/${bookingId}/accept`,

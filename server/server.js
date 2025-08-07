@@ -25,7 +25,8 @@ app.use("/user", require("./routes/user"));
 app.use("/room", require("./routes/room"));
 app.use("/book", require("./routes/book")); 
 app.use("/chat", require("./routes/chat"));
-// app.use("/room", require("./routes/chat"));
+app.use("/admin", require("./routes/admin.route")) ;
+
 
 const server = http.createServer(app);
 

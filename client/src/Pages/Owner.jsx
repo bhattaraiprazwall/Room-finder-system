@@ -92,7 +92,7 @@ const Owner = () => {
           Longitude: "",
           Latitude: "",
         });
-        navigate("/landlord");
+        navigate("/landlord/my-rooms");
       } else {
         toast.error(result.message || "Something went wrong");
       }

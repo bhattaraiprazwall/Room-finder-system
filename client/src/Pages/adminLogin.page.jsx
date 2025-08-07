@@ -1,11 +1,11 @@
 import React, { useContext, useState } from "react";
-import { login as authServiceLogin } from "../Services/Auth"; // Renamed to avoid conflict
+import { adminLogin as authServiceLogin } from "../Services/Auth"; // Renamed to avoid conflict
 import { configContext } from "../Context/ConfigContext";
 import { AuthContext } from "../Context/AuthContext"; // Added AuthContext import
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const AdminLoginPage = () => {
   const { setDetails, setConfig } = useContext(configContext);
   const { login: authLogin } = useContext(AuthContext); // Get login from AuthContext
   const navigate = useNavigate();
@@ -41,12 +41,11 @@ const Login = () => {
         },
       });
 
-      const userDetails = await fetchUserDetails(token);
+      const userDetails = await fetchAdminDetails(token);
       setDetails(userDetails);
       console.log("User details", userDetails);
-
-      // Navigate after successful auth
-      navigate(userDetails.role === 'landlord' ? '/landlord/my-rooms' : '/Roomseekers');
+      
+      navigate("/admin/viewRooms");
 
       toast.success("Login successful!");
     } catch (err) {
@@ -58,16 +57,17 @@ const Login = () => {
       setTimeout(() => setLoginStatus(""), 3000);
     }
   };
-  const fetchUserDetails = async (token) => {
+  const fetchAdminDetails = async (token) => {
     try {
-      const res = await fetch("http://localhost:5000/user/infor", {
+      console.log("Response from server admin:");
+
+      const res = await fetch("http://localhost:5000/admin/info", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       });
-
       if (!res.ok) {
         const errorText = await res.text();
         console.error("Error response from server:", errorText);
@@ -108,7 +108,7 @@ const Login = () => {
             alt="" 
           /> */}
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Log into your account
+            Log into your admin account
           </h2>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -203,4 +203,4 @@ const IconLoading = ({ className }) => (
   </svg>
 );
 
-export default Login;
+export default AdminLoginPage;

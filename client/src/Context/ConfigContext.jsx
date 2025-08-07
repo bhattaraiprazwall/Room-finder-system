@@ -30,15 +30,11 @@ const ConfigContextProvider = ({ children }) => {
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
-    console.log("ttokennn:", token)
     if (token) {
       try {
         const decoded = jwtDecode(token); // this gives you { name, email, role, _id, etc. }
         setDetails(decoded); // ✅ Set user details in context
         setId(decoded.id);
-
-            console.log("ttokennn ddddd:", decoded.id)
-            console.log("ttokennn ddddd:", details)
 
       } catch (error) {
         console.error("Failed to decode token:", error);

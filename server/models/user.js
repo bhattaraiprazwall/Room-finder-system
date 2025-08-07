@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { roomStatus } = require('../types/roomStatus.typ');
 
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
@@ -7,6 +8,7 @@ const userSchema = new mongoose.Schema({
     role: { type: String, default: 'user' },
     MobileNumber: { type:String, required: true },
     img :{ type: String, required: true}
+    // userStatus:{type:String, enum:roomStatus, default: roomStatus.PENDING}
     
 });
 

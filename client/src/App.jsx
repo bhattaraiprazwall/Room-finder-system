@@ -26,6 +26,8 @@ import NearbyRooms from "./views/rooms/NearbyRooms";
 import { ToastContainer } from "react-toastify";
 // import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AdminLoginPage from "./Pages/adminLogin.page";
+import ViewRoomsToAdmin from "./Pages/viewRoomToAdmin";
 
 
 
@@ -37,7 +39,7 @@ const NavbarWrapper = () => {
   // Show navbar for:
   // - Non-admin users (when user exists and role isn't admin)
   // - Public pages (when user is null)
-  return user?.role !== "admin" ? <Navbar /> : null;
+  return user?.role !== "landlord" || user?.role !== "admin" ? <Navbar /> : null;
 };
 
 const App = () => {
@@ -56,16 +58,16 @@ const App = () => {
               <Route path="/room/:roomId" element={<RoomDetails />} />
               <Route path="/roomInUserSide/:roomId" element={<RoomDetailsinUserSide />} />
               <Route path="/profile" element={<OwnerProfile />} />
-              <Route path="/googlemap" element={<LocationPicker/>}/>
+              <Route path="/googlemap" element={<LocationPicker />} />
               <Route path="/nearby" element={<NearbyRooms />} />
-
-
+              <Route path="/admin/login" element={<AdminLoginPage />} />
+              <Route path="/admin/viewRooms" element={<ViewRoomsToAdmin />} />
 
               {/* Admin only routes */}
               <Route
                 path="/landlord/my-rooms"
                 element={
-                  <AuthorizationGuard allowedRoles={["admin"]}>
+                  <AuthorizationGuard allowedRoles={["landlord"]}>
                     <LandLordRooms />
                   </AuthorizationGuard>
                 }
@@ -73,7 +75,7 @@ const App = () => {
               <Route
                 path="/landlord"
                 element={
-                  <AuthorizationGuard allowedRoles={["admin"]}>
+                  <AuthorizationGuard allowedRoles={["landlord"]}>
                     <AdminDashboard />
                   </AuthorizationGuard>
                 }
@@ -81,7 +83,7 @@ const App = () => {
               <Route
                 path="/RoomCreate"
                 element={
-                  <AuthorizationGuard allowedRoles={["admin"]}>
+                  <AuthorizationGuard allowedRoles={["landlord"]}>
                     <Owner />
                   </AuthorizationGuard>
                 }
@@ -89,7 +91,7 @@ const App = () => {
               <Route
                 path="/landlord/booking-requests"
                 element={
-                  <AuthorizationGuard allowedRoles={["admin"]}>
+                  <AuthorizationGuard allowedRoles={["landlord"]}>
                     <BookedRoomsPage />
                   </AuthorizationGuard>
                 }
@@ -117,7 +119,7 @@ const App = () => {
               <Route
                 path="/updateroom"
                 element={
-                  <AuthorizationGuard allowedRoles={["admin"]}>
+                  <AuthorizationGuard allowedRoles={["landlord"]}>
                     <UpdateRoom />
                   </AuthorizationGuard>
                 }

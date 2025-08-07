@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { roomStatus } = require('../types/roomStatus.typ');
 
 const roomSchema = new mongoose.Schema({
   owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
@@ -44,7 +45,12 @@ const roomSchema = new mongoose.Schema({
 
   available: {
     type: Boolean,
-    default: true
+    default: false
+  },
+  roomStatus: {
+    type: String,
+    enum: Object.values(roomStatus),
+    default: roomStatus.PENDING
   }
 });
 
