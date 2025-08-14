@@ -112,12 +112,22 @@ const BookedRoomsPage = () => {
                   <p className="text-sm text-gray-600">{booking.user?.email || ''}</p>
                 </div>
 
-                <div>
-                  <p className="text-sm text-gray-500">Booking Date</p>
-                  <p className="font-medium">
-                    {new Date(booking.bookingDate).toLocaleDateString()} at {booking.bookingTime}
-                  </p>
-                </div>
+               <div>
+  <p className="text-sm text-gray-500">Booking Date</p>
+  <p className="font-medium">
+    {new Date(booking.createdAt).toLocaleDateString()} at {booking.bookingTime}
+  </p>
+
+  <p className="text-sm text-gray-500">Start Date</p>
+  <p className="font-medium">
+    {new Date(booking.startDate).toLocaleDateString()}
+  </p>
+  <p className="text-sm text-gray-500">End Date</p>
+  <p className="font-medium">
+    {new Date(booking.endDate).toLocaleDateString()}
+  </p>
+</div>
+
               </div>
 
               {booking.status === 'pending' && (

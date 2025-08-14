@@ -4,9 +4,13 @@ const bookingSchema = mongoose.Schema(
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     room: { type: mongoose.Schema.Types.ObjectId, ref: "Room" },
     owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    bookingDate: {
+    startDate: {
       type: Date,
       required: true,
+    },
+    endDate:{
+      type:Date,
+      required:true,
     },
     bookingTime: {
       type: String,

@@ -42,7 +42,7 @@ const LandingPage = () => {
         <h2 className="text-2xl font-semibold mb-4">Are You a Room Owner?</h2>
         <p className="mb-4 text-gray-700">List your room and reach thousands of potential renters.</p>
         <a
-          href="/Owner"
+          href="/login"
           className="px-5 py-2 bg-green-600 text-white rounded hover:bg-green-700"
         >
           Post Your Room
