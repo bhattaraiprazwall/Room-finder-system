@@ -33,7 +33,7 @@ const LandLordRooms = () => {
     } catch (error) {
       if (error.response) {
         toast.error(
-          `Error: ${error.response.status} - ${error.response.data?.msg || "Failed to fetch rooms"}`
+          // `Error: ${error.response.status} - ${error.response.data?.msg || "Failed to fetch rooms"}`
         );
       } else {
         toast.error("Error fetching rooms: " + error.message);
