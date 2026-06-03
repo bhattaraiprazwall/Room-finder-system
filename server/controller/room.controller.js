@@ -1,11 +1,11 @@
 //testing code 
-import Room from '../models/room.js';
-import asyncHandler from '../utils/asyncHandler.js';
-import CustomError from '../utils/customError.util.js';
-import haversineDistance from "../utils/haversine.js";
+const Room = require('../models/room.js');
+const asyncHandler = require('../utils/asyncHandler.js');
+const CustomError = require('../utils/customError.util.js');
+const haversineDistance = require("../utils/haversine.js");
 
 // Get Nearby Rooms using haversine algorithm
-export const getNearbyRooms = asyncHandler(async (req, res, next) => {
+const getNearbyRooms = asyncHandler(async (req, res, next) => {
   const { lat, lng, radius } = req.query;
   console.log("nearby data:", req.query);
 
@@ -50,3 +50,5 @@ export const getNearbyRooms = asyncHandler(async (req, res, next) => {
     return next(new CustomError("Failed to find nearby rooms", 500));
   }
 });
+
+module.exports = { getNearbyRooms };

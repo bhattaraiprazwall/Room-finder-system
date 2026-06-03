@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 import Home from "../assets/Home.jpg";
 import { toast } from "react-toastify";
 
@@ -94,7 +95,7 @@ const RoomDetailsinUserSide = () => {
       if (!token) throw new Error("Token not found");
 
       const res = await axios.get(
-        `http://localhost:5000/room/infoRoom/${roomId}`,
+        `${API_URL}/room/infoRoom/${roomId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -135,7 +136,7 @@ const RoomDetailsinUserSide = () => {
       if (!token) throw new Error("Token not found");
 
       await axios.post(
-        `http://localhost:5000/book/bookrequest/${roomId}`,
+        `${API_URL}/book/bookrequest/${roomId}`,
         {
           roomId,
           startDate: dates.startDate,

@@ -1,28 +1,23 @@
-const mongoose = require('mongoose');
-const Book = require('./booking');
-const User = require('./user');
-const affidavitSchema = mongoose.Schema({
-   
+const mongoose = require("mongoose");
+
+const affidavitSchema = new mongoose.Schema(
+  {
     booking: {
-        type:mongoose.Schema.Types.ObjectId ,ref:"Book",
-        required: true
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Book",
+      required: true,
     },
     user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true
-      },
-      data: {
-        type: Map,
-        of: mongoose.Schema.Types.Mixed, 
-        required: true
-      },
-      createdAt: {
-        type: Date,
-        default: Date.now
-      }
-})
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    data: {
+      type: mongoose.Schema.Types.Mixed,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
 
-const Affidavit = mongoose.model("Affidavit", affidavitSchema)
-
-module.exports = Affidavit;
+module.exports = mongoose.model("Affidavit", affidavitSchema);

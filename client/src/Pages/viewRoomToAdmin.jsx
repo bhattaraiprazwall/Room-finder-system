@@ -181,6 +181,7 @@
 // export default ViewRoomsToAdmin;
 
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { configContext } from "../Context/ConfigContext";
@@ -201,7 +202,7 @@ const ViewRoomsToAdmin = () => {
     try {
       if (!token) throw new Error("Token is missing");
 
-      const res = await axios.get(`http://localhost:5000/room/admin/allRoom`, {
+      const res = await axios.get(`${API_URL}/room/admin/allRoom`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -248,7 +249,7 @@ const ViewRoomsToAdmin = () => {
   const handleAcceptRoomRequest = async (roomId) => {
     try {
       await axios.post(
-        `http://localhost:5000/admin/acceptRoom/${roomId}`,
+        `${API_URL}/admin/acceptRoom/${roomId}`,
         {},
         {
           headers: {
@@ -269,7 +270,7 @@ const ViewRoomsToAdmin = () => {
   const handleDeleteClick = async (roomId) => {
     if (!window.confirm("Are you sure you want to delete this room?")) return;
     try {
-      await axios.delete(`http://localhost:5000/admin/rejectRoom/${roomId}`, {
+      await axios.delete(`${API_URL}/admin/rejectRoom/${roomId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

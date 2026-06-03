@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Renter = () => {
 
 
     const [bookings, setBookings] = useState([]);
-       
+      
       const bookingId = 
 
     useEffect(() => {
@@ -12,7 +13,7 @@ const Renter = () => {
     }, []);
   
     const fetchBookings = async () => {
-      const response = await fetch('http://localhost:5000/bookresponse/:bookingId');
+      const response = await fetch(`${API_URL}/bookresponse/:bookingId`);
       const data = await response.json();
       setBookings(data.bookings);
     };

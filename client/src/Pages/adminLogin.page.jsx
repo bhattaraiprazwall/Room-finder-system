@@ -61,7 +61,7 @@ const AdminLoginPage = () => {
     try {
       console.log("Response from server admin:");
 
-      const res = await fetch("http://localhost:5000/admin/info", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/admin/info`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

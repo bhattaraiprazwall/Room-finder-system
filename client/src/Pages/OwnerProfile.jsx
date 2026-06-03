@@ -1,4 +1,5 @@
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { configContext } from "../Context/ConfigContext";
@@ -23,7 +24,7 @@ const OwnerProfile = () => {
       if (!token) throw new Error("Token is missing");
 
       const res = await axios.get(
-         `http://localhost:5000/room/getRoomByOwner/${details.id}`,
+         `${API_URL}/room/getRoomByOwner/${details.id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

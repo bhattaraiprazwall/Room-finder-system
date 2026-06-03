@@ -1,4 +1,5 @@
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { configContext } from "../Context/ConfigContext";
@@ -19,7 +20,7 @@ const LandLordRooms = () => {
       if (!token) throw new Error("Token is missing");
 
       const res = await axios.get(
-        `http://localhost:5000/room/getRoomByOwner/${id}`,
+        `${API_URL}/room/getRoomByOwner/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -63,7 +64,7 @@ const LandLordRooms = () => {
     if (!window.confirm("Are you sure you want to delete this room?")) return;
     try {
       const token = sessionStorage.getItem("token");
-      await axios.delete(`http://localhost:5000/room/delete/${roomId}`, {
+      await axios.delete(`${API_URL}/room/delete/${roomId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

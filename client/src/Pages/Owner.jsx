@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { configContext } from "../Context/ConfigContext";
 import { toast } from "react-toastify";
+const API_URL = import.meta.env.VITE_API_URL;
 import GoogleMapPicker from "../Components/GoogleMapPicker";
 import { useNavigate } from "react-router-dom";
 
@@ -71,7 +72,7 @@ const Owner = () => {
     form.append("owner", ownerId); // ✅ Append owner ID
 
     try {
-      const res = await fetch("http://localhost:5000/room/create", {
+      const res = await fetch(`${API_URL}/room/create`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

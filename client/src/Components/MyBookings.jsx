@@ -1,4 +1,5 @@
 import axios from 'axios';
+const API_URL = import.meta.env.VITE_API_URL;
 import React, { useEffect, useState } from 'react';
 
 const MyBookings = () => {
@@ -13,7 +14,7 @@ const MyBookings = () => {
         const ownerId = decoded.id;
 
         const response = await axios.get(
-          `http://localhost:5000/book/myRooms/${ownerId}`,
+          `${API_URL}/book/myRooms/${ownerId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`

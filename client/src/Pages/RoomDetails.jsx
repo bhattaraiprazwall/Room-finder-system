@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { configContext } from "../Context/ConfigContext";
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 import Home from "../assets/Home.jpg";
 
 const RoomDetails = () => {
@@ -22,7 +23,7 @@ const RoomDetails = () => {
       if (!token) throw new Error("token not found");
 
       const res = await axios.get(
-        `http://localhost:5000/room/infoRoom/${roomId}`,
+        `${API_URL}/room/infoRoom/${roomId}`,
         {
           headers: {    
             Authorization: `Bearer ${token}`,
@@ -55,7 +56,7 @@ const RoomDetails = () => {
           return;
         }
   
-        await axios.delete(`http://localhost:5000/room/delete/${roomId}`, {
+        await axios.delete(`${API_URL}/room/delete/${roomId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

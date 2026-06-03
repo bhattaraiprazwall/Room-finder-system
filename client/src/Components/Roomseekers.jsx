@@ -234,6 +234,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "../Css/UserDash.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 import Footer from "../Pages/Footer";
 import EnhancedQuoteSection from "../Pages/EnhancedQuoteSection";
 import InfoBanner from "../Pages/InfoBanner";
@@ -308,7 +309,7 @@ const Roomseekers = () => {
 
   const fetchRooms = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/room/allRoom`);
+      const response = await axios.get(`${API_URL}/room/allRoom`);
       const roomData = response.data;
       SetRoom(roomData);
       const randomRooms = [...roomData]
@@ -336,7 +337,7 @@ const Roomseekers = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:5000/room/nearby?lat=${lat}&lng=${lng}&radius=3`,
+        `${API_URL}/room/nearby?lat=${lat}&lng=${lng}&radius=3`,
         {
           method: "GET",
           headers: {

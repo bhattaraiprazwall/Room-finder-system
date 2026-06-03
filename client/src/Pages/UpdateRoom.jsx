@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 import { toast } from "react-toastify";
 import { configContext } from "../Context/ConfigContext";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -34,7 +35,7 @@ const UpdateRoom = () => {
     e.preventDefault();
     try {
       const res = await axios.put(
-        `http://localhost:5000/room/update/${roomId}`,
+        `${API_URL}/room/update/${roomId}`,
         formData,
         {
         headers: {
