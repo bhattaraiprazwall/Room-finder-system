@@ -319,7 +319,7 @@ const Roomseekers = () => {
       // toast.success("Rooms loaded successfully");
     } catch (error) {
       console.error(error);
-      toast.error("Failed to fetch rooms");
+      // toast.error("Failed to fetch rooms");
       setLoading(false);
     }
   };
