@@ -20,6 +20,12 @@ dbConnection();
 
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.status(200).json({
+    status: "OK",
+    message: "Room Finder API is running 🚀"
+  });
+});
 
 // ✅ Your routes
 app.use("/user", require("./routes/user"));
