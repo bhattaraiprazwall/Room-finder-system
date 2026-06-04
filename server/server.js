@@ -15,7 +15,7 @@ app.use(
   })
 );
 
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
 
 app.use(express.json());
 
@@ -40,7 +40,7 @@ app.get("/health", (req, res) => {
 
 const server = http.createServer(app);
 
-server.listen(PORT, () => {
-  // dbConnection();
-  console.log(`SERVER IS RUNNING ON PORT ${PORT}...`);
+server.listen(PORT, "0.0.0.0", () => {
+  dbConnection();
+  console.log(`SERVER RUNNING ON ${PORT}`);
 });
