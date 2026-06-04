@@ -27,6 +27,10 @@ app.get("/", (req, res) => {
   });
 });
 
+app.get("/health", (req, res) => {
+  res.status(200).json({ ok: true });
+});
+
 // ✅ Your routes
 app.use("/user", require("./routes/user"));
 app.use("/room", require("./routes/room"));
