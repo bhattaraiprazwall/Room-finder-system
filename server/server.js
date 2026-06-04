@@ -20,22 +20,18 @@ const PORT = 5000;
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.status(200).json({
-    status: "OK",
-    message: "Room Finder API is running 🚀"
-  });
+  res.send("OK");
 });
-
 app.get("/health", (req, res) => {
   res.status(200).json({ ok: true });
 });
 
 // ✅ Your routes
-// app.use("/user", require("./routes/user"));
-// app.use("/room", require("./routes/room"));
-// app.use("/book", require("./routes/book")); 
-// app.use("/chat", require("./routes/chat"));
-// app.use("/admin", require("./routes/admin.route")) ;
+app.use("/user", require("./routes/user"));
+app.use("/room", require("./routes/room"));
+app.use("/book", require("./routes/book")); 
+app.use("/chat", require("./routes/chat"));
+app.use("/admin", require("./routes/admin.route")) ;
 
 
 const server = http.createServer(app);
